@@ -103,11 +103,11 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
         try {
             clz = Class.forName(bd.getClassName());
 
-            //handle constructor
+            //处理构造方法中的参数：构造方法注入
             ArgumentValues argumentValues = bd.getConstructorArgumentValues();
             if (!argumentValues.isEmpty()) {
                 Class<?>[] paramTypes = new Class<?>[argumentValues.getArgumentCount()];
-                Object[] paramValues =   new Object[argumentValues.getArgumentCount()];
+                Object[] paramValues = new Object[argumentValues.getArgumentCount()];
                 for (int i=0; i<argumentValues.getArgumentCount(); i++) {
                     ArgumentValue argumentValue = argumentValues.getIndexedArgumentValue(i);
                     if ("String".equals(argumentValue.getType()) || "java.lang.String".equals(argumentValue.getType())) {
@@ -152,7 +152,7 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
             e.printStackTrace();
         }
 
-        //handle properties
+        //Setter注入方式，setXXXX()
         PropertyValues propertyValues = bd.getPropertyValues();
         if (!propertyValues.isEmpty()) {
             for (int i=0; i<propertyValues.size(); i++) {
