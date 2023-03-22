@@ -56,7 +56,6 @@ public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements B
             try {
                 getBean(name);
             } catch (BeansException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

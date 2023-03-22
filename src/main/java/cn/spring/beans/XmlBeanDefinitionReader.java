@@ -6,7 +6,7 @@ import org.dom4j.Element;
 import java.util.List;
 
 public class XmlBeanDefinitionReader {
-    private BeanFactory bf;
+    private final BeanFactory bf;
 
     public XmlBeanDefinitionReader(BeanFactory bf) {
         this.bf = bf;
