@@ -2,8 +2,12 @@ package cn.spring.beans;
 
 
 /**
- * Bean定义类，支持Bean的两个属性：id和className
- * 属性扩展
+ * Bean的定义主要包括以下几个方面：
+ * 1. Bean的模式，单例模式，原型模式
+ * 2.是否懒加载
+ * 3.构造方法参数
+ * 4.Filed属性参数
+ * 5.
  */
 public class BeanDefinition {
     String SCOPE_SINGLETON = "singleton";

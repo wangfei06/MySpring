@@ -7,6 +7,10 @@ import cn.spring.core.Resource;
 public class ClassPathXmlApplicationContext implements BeanFactory,ApplicationEventPublisher {
     SimpleBeanFactory beanFactory;
 
+    /**
+     * 构造方法：根据xml配置文件名称加载上下文
+     * @param fileName
+     */
     public ClassPathXmlApplicationContext(String fileName){
         Resource res = new ClassPathXmlResource(fileName);
         SimpleBeanFactory bf = new SimpleBeanFactory();
