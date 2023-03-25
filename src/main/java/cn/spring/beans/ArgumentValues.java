@@ -3,6 +3,9 @@ package cn.spring.beans;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Bean构造方法的参数列表
+ */
 public class ArgumentValues {
     private final List<ArgumentValue> argumentValueList = new ArrayList<ArgumentValue>();
 

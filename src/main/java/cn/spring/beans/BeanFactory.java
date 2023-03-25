@@ -1,5 +1,8 @@
 package cn.spring.beans;
 
+/**
+ * BeanFactory的作用：将创建对象和使用对象的业务代码进行分离
+ */
 public interface BeanFactory {
     /**
      * 根据Bean名称获取Bean

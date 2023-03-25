@@ -1,11 +1,14 @@
 package cn.spring.beans;
 
 /**
- * Bean的参数
+ * Bean的构造方法参数
  */
 public class ArgumentValue {
+    //参数值
     private Object value;
+    //参数类型
     private String type;
+    //参数名称
     private String name;
 
     public ArgumentValue(String type, Object value) {

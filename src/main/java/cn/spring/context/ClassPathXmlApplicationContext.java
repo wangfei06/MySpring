@@ -44,19 +44,16 @@ public class ClassPathXmlApplicationContext implements BeanFactory,ApplicationEv
 
     @Override
     public boolean isSingleton(String name) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean isPrototype(String name) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public Class<?> getType(String name) {
-        // TODO Auto-generated method stub
         return null;
     }
 }

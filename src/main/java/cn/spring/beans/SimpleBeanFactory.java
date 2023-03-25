@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * BeanFactory的实现类
+ */
 public class SimpleBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry{
     private Map<String,BeanDefinition> beanDefinitionMap=new ConcurrentHashMap<>(256);
     private List<String> beanDefinitionNames=new ArrayList<>();
