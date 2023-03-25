@@ -63,6 +63,7 @@ public class XmlBeanDefinitionReader {
             String[] refArray = refs.toArray(new String[0]);
             beanDefinition.setDependsOn(refArray);
 
+            System.out.println(res.hasNext());
             this.bf.registerBeanDefinition(beanID,beanDefinition);
         }
 

@@ -12,4 +12,9 @@
         <property type="String" name="name" value="Zhang San"/>
         <property type="String" name="age" value="18"/>
     </bean>
+
+    <bean id = "secondService" class="cn.spring.test.SecondService">
+        <property type="String" name="name" value="Zhang San"/>
+        <property type="String" name="age" value="18"/>
+    </bean>
 </beans>
