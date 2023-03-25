@@ -3,6 +3,7 @@ package cn.spring.beans;
 import cn.spring.core.Resource;
 import org.dom4j.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,18 +28,6 @@ public class XmlBeanDefinitionReader {
 
             BeanDefinition beanDefinition=new BeanDefinition(beanID,beanClassName);
 
-            //获取配置文件中的property属性
-            List<Element> propertyElements = element.elements("property");
-            PropertyValues PVS = new PropertyValues();
-            for (Element e : propertyElements) {
-                String pType = e.attributeValue("type");
-                String pName = e.attributeValue("name");
-                String pValue = e.attributeValue("value");
-                PVS.addPropertyValue(new PropertyValue(pType, pName, pValue));
-            }
-            beanDefinition.setPropertyValues(PVS);
-
-            //获取配置文件中的构造方法参数
             List<Element> constructorElements = element.elements("constructor-arg");
             ArgumentValues AVS = new ArgumentValues();
             for (Element e : constructorElements) {
@@ -49,7 +38,31 @@ public class XmlBeanDefinitionReader {
             }
             beanDefinition.setConstructorArgumentValues(AVS);
 
-            //注册BeanDefinition，获取到创建Bean的依赖信息
+            List<Element> propertyElements = element.elements("property");
+            PropertyValues PVS = new PropertyValues();
+            List<String> refs = new ArrayList<>();
+            for (Element e : propertyElements) {
+                String pType = e.attributeValue("type");
+                String pName = e.attributeValue("name");
+                String pValue = e.attributeValue("value");
+                String pRef = e.attributeValue("ref");
+                String pV = "";
+                boolean isRef = false;
+                if (pValue != null && !pValue.equals("")) {
+                    isRef = false;
+                    pV = pValue;
+                } else if (pRef != null && !pRef.equals("")) {
+                    isRef = true;
+                    pV = pRef;
+                    refs.add(pRef);
+                }
+                PVS.addPropertyValue(new PropertyValue(pType, pName, pV, isRef));
+            }
+
+            beanDefinition.setPropertyValues(PVS);
+            String[] refArray = refs.toArray(new String[0]);
+            beanDefinition.setDependsOn(refArray);
+
             this.bf.registerBeanDefinition(beanID,beanDefinition);
         }
 

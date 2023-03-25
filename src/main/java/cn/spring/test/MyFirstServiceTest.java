@@ -3,13 +3,14 @@ package cn.spring.test;
 import cn.spring.beans.BeansException;
 import cn.spring.context.ClassPathXmlApplicationContext;
 
-public class MyFirstBeanTest {
+public class MyFirstServiceTest {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
-        MyFirstBean myFirstBean;
+        MyFirstService myFirstService;
         try {
-            myFirstBean = (MyFirstBean) ctx.getBean("myFirstBean");
-            myFirstBean.sayHello();
+            myFirstService = (MyFirstService) ctx.getBean("myFirstService");
+            myFirstService.sayHello();
+            myFirstService.getBaseService().say();
         } catch (BeansException e) {
             e.printStackTrace();
         }

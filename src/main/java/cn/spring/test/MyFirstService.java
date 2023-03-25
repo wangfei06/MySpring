@@ -1,10 +1,12 @@
 package cn.spring.test;
 
-public class MyFirstBean {
+public class MyFirstService {
     private String name;
     private int level;
     private String property1;
     private String property2;
+
+    private BaseService baseService;
 
     public String getProperty1() {
         return property1;
@@ -22,10 +24,18 @@ public class MyFirstBean {
         this.property2 = property2;
     }
 
-    public MyFirstBean() {
+    public BaseService getBaseService() {
+        return baseService;
     }
 
-    public MyFirstBean(String name, int level) {
+    public void setBaseService(BaseService baseService) {
+        this.baseService = baseService;
+    }
+
+    public MyFirstService() {
+    }
+
+    public MyFirstService(String name, int level) {
         this.name = name;
         this.level = level;
         System.out.println(this.name + "," + this.level);
