@@ -17,7 +17,7 @@ public interface BeanFactory {
      * @param name 名称
      * @param bd BeanDefinition
      */
-    void registerBeanDefinition(String name, BeanDefinition bd);
+//    void registerBeanDefinition(String name, BeanDefinition bd);
 
     /**
      * 注册Bean

@@ -88,14 +88,9 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext{
 
 	@Override
 	public void addApplicationListener(ApplicationListener listener) {
-
+		this.getApplicationEventPublisher().addApplicationListener(listener);
 	}
 
-
-	@Override
-	public void registerBeanDefinition(String name, BeanDefinition bd) {
-
-	}
 
 	@Override
 	public void registerBean(String beanName, Object obj) {

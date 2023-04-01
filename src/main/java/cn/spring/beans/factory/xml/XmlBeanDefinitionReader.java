@@ -3,6 +3,8 @@ package cn.spring.beans.factory.xml;
 import cn.spring.beans.*;
 import cn.spring.beans.factory.config.ConstructorArgumentValue;
 import cn.spring.beans.factory.config.ConstructorArgumentValues;
+import cn.spring.beans.factory.support.AbstractBeanFactory;
+import cn.spring.beans.factory.support.DefaultListableBeanFactory;
 import cn.spring.core.Resource;
 import org.dom4j.Element;
 
@@ -13,9 +15,9 @@ import java.util.List;
  * 从XML中读取Bean配置信息，生成BeanDefinition
  */
 public class XmlBeanDefinitionReader {
-    private final BeanFactory bf;
+    private AbstractBeanFactory bf;
 
-    public XmlBeanDefinitionReader(BeanFactory bf) {
+    public XmlBeanDefinitionReader(AbstractBeanFactory bf) {
         this.bf = bf;
     }
 

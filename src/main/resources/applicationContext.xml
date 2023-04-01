@@ -5,6 +5,7 @@
 		<constructor-arg type="int" name="level" value="3"/>
 		<property type="String" name="property1" value="Someone says"/>
 		<property type="String" name="property2" value="Hello World!"/>
+		<!--注释掉property方式，使用@Autowired注入的方式-->
 <!--		<property type = "cn.spring.test.BaseService" name = "baseService" ref = "baseService"></property>-->
 	</bean>
 
