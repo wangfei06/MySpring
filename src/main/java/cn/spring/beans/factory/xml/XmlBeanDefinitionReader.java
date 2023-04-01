@@ -1,5 +1,8 @@
-package cn.spring.beans;
+package cn.spring.beans.factory.xml;
 
+import cn.spring.beans.*;
+import cn.spring.beans.factory.config.ConstructorArgumentValue;
+import cn.spring.beans.factory.config.ConstructorArgumentValues;
 import cn.spring.core.Resource;
 import org.dom4j.Element;
 
@@ -29,12 +32,12 @@ public class XmlBeanDefinitionReader {
             BeanDefinition beanDefinition=new BeanDefinition(beanID,beanClassName);
 
             List<Element> constructorElements = element.elements("constructor-arg");
-            ArgumentValues AVS = new ArgumentValues();
+            ConstructorArgumentValues AVS = new ConstructorArgumentValues();
             for (Element e : constructorElements) {
                 String pType = e.attributeValue("type");
                 String pName = e.attributeValue("name");
                 String pValue = e.attributeValue("value");
-                AVS.addArgumentValue(new ArgumentValue(pType,pName,pValue));
+                AVS.addArgumentValue(new ConstructorArgumentValue(pType,pName,pValue));
             }
             beanDefinition.setConstructorArgumentValues(AVS);
 

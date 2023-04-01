@@ -1,11 +1,14 @@
 package cn.spring.test;
 
+import cn.spring.beans.factory.annotation.Autowired;
+
 public class MyFirstService {
     private String name;
     private int level;
     private String property1;
     private String property2;
 
+    @Autowired
     private BaseService baseService;
 
     public String getProperty1() {

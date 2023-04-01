@@ -5,7 +5,7 @@ import cn.spring.context.ClassPathXmlApplicationContext;
 
 public class MyFirstServiceTest {
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
+        ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         MyFirstService myFirstService;
         try {
             myFirstService = (MyFirstService) ctx.getBean("myFirstService");
