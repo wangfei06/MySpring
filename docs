@@ -16,3 +16,12 @@ IoC容器，本质也就是BeanFactory，作用是将创建对象与使用对象
 在实际应用中，还可以扩展Bean的参数。
 另外，Bean容器默认采用单例模式，但是同时也会支持原型模式。
 
+*******************3*****************************
+如何基于Tomcat搭建web运行环境？
+
+1.首先下载Tomcat，解压后备用
+2.在IDEA的Project Structure设置module中add web，然后如代码所示，创建web所需目录和web.xml等文件
+3.在IDEA的应用启动设置中，设置artifact，指定Tomcat路径
+4.启动Tomcat进行测试
+
+
