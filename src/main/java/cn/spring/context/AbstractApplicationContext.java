@@ -19,7 +19,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 	private final AtomicBoolean active = new AtomicBoolean();
 	private final AtomicBoolean closed = new AtomicBoolean();
 	private ApplicationEventPublisher applicationEventPublisher;
-	
+
 
 
 	@Override
@@ -32,6 +32,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 		return getBeanFactory().containsBean(name);
 	}
 
+//	public void registerBean(String beanName, Object obj) {
+//		getBeanFactory().registerBean(beanName, obj);
+//	}
 
 	@Override
 	public boolean isSingleton(String name) {
@@ -47,32 +50,32 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 	public Class<?> getType(String name) {
 		return getBeanFactory().getType(name);
 	}
-	
+
 	public List<BeanFactoryPostProcessor> getBeanFactoryPostProcessors() {
 		return this.beanFactoryPostProcessors;
 	}
-	
-	
+
+
 	public void refresh() throws BeansException, IllegalStateException {
 		postProcessBeanFactory(getBeanFactory());
-		
+
 		registerBeanPostProcessors(getBeanFactory());
-		
+
 		initApplicationEventPublisher();
 
 		onRefresh();
-		
+
 		registerListeners();
-		
+
 		finishRefresh();
 	}
-	
-	abstract void registerListeners();
-	abstract void initApplicationEventPublisher();
-	abstract void postProcessBeanFactory(ConfigurableListableBeanFactory bf);
-	abstract void registerBeanPostProcessors(ConfigurableListableBeanFactory bf);
-	abstract void onRefresh();
-	abstract void finishRefresh();
+
+	public abstract void registerListeners();
+	public abstract void initApplicationEventPublisher();
+	public abstract void postProcessBeanFactory(ConfigurableListableBeanFactory bf);
+	public abstract void registerBeanPostProcessors(ConfigurableListableBeanFactory bf);
+	public abstract void onRefresh();
+	public abstract void finishRefresh();
 
 	@Override
 	public void registerSingleton(String beanName, Object singletonObject) {
@@ -122,7 +125,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 	@Override
 	public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
 		getBeanFactory().addBeanPostProcessor(beanPostProcessor);
-		
+
 	}
 
 	@Override
@@ -145,7 +148,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 		return getBeanFactory().getDependenciesForBean(beanName);
 	}
 
-	
+
 	@Override
 	public String getApplicationName() {
 		return "";
@@ -156,27 +159,27 @@ public abstract class AbstractApplicationContext implements ApplicationContext{
 	}
 	@Override
 	public abstract ConfigurableListableBeanFactory getBeanFactory() throws IllegalStateException;
-	
+
 	@Override
 	public void setEnvironment(Environment environment) {
 		this.environment = environment;
 	}
-	
+
 	@Override
 	public Environment getEnvironment() {
 		return this.environment;
 	}
-	
+
 	@Override
 	public void addBeanFactoryPostProcessor(BeanFactoryPostProcessor postProcessor) {
 		this.beanFactoryPostProcessors.add(postProcessor);
 	}
-	
+
 
 	@Override
 	public void close() {
 	}
-	
+
 	@Override
 	public boolean isActive() {
 		return true;
