@@ -130,6 +130,7 @@ public class DispatcherServlet extends HttpServlet {
         }
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String sPath = request.getServletPath();
         System.out.println(sPath);
@@ -157,6 +158,7 @@ public class DispatcherServlet extends HttpServlet {
         response.getWriter().append(objResult.toString());
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
