@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory,BeanDefinitionRegistry {
-    protected Map<String, BeanDefinition> beanDefinitionMap=new ConcurrentHashMap<>(256);
-    protected List<String> beanDefinitionNames=new ArrayList<>();
+public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory, BeanDefinitionRegistry {
+    protected Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
+    protected List<String> beanDefinitionNames = new ArrayList<>();
     private final Map<String, Object> earlySingletonObjects = new HashMap<String, Object>(16);
 
     public AbstractBeanFactory() {
@@ -33,7 +33,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         }
     }
 
-    public Object getBean(String beanName) throws BeansException{
+    public Object getBean(String beanName) throws BeansException {
         Object singleton = this.getSingleton(beanName);
 
         if (singleton == null) {
@@ -41,7 +41,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
             if (singleton == null) {
                 System.out.println("get bean null -------------- " + beanName);
                 BeanDefinition bd = beanDefinitionMap.get(beanName);
-                singleton=createBean(bd);
+                singleton = createBean(bd);
                 this.registerBean(beanName, singleton);
 
                 //step 1 : postProcessBeforeInitialization
@@ -96,7 +96,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
     @Override
     public void registerBeanDefinition(String name, BeanDefinition bd) {
-        this.beanDefinitionMap.put(name,bd);
+        this.beanDefinitionMap.put(name, bd);
         this.beanDefinitionNames.add(name);
         if (!bd.isLazyInit()) {
             try {
@@ -168,25 +168,22 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
             //handle constructor
             ConstructorArgumentValues argumentValues = bd.getConstructorArgumentValues();
-            if (argumentValues != null){
+            if (argumentValues != null) {
                 if (!argumentValues.isEmpty()) {
                     Class<?>[] paramTypes = new Class<?>[argumentValues.getArgumentCount()];
-                    Object[] paramValues =   new Object[argumentValues.getArgumentCount()];
-                    for (int i=0; i<argumentValues.getArgumentCount(); i++) {
+                    Object[] paramValues = new Object[argumentValues.getArgumentCount()];
+                    for (int i = 0; i < argumentValues.getArgumentCount(); i++) {
                         ConstructorArgumentValue argumentValue = argumentValues.getIndexedArgumentValue(i);
                         if ("String".equals(argumentValue.getType()) || "java.lang.String".equals(argumentValue.getType())) {
                             paramTypes[i] = String.class;
                             paramValues[i] = argumentValue.getValue();
-                        }
-                        else if ("Integer".equals(argumentValue.getType()) || "java.lang.Integer".equals(argumentValue.getType())) {
+                        } else if ("Integer".equals(argumentValue.getType()) || "java.lang.Integer".equals(argumentValue.getType())) {
                             paramTypes[i] = Integer.class;
                             paramValues[i] = Integer.valueOf((String) argumentValue.getValue());
-                        }
-                        else if ("int".equals(argumentValue.getType())) {
+                        } else if ("int".equals(argumentValue.getType())) {
                             paramTypes[i] = int.class;
                             paramValues[i] = Integer.valueOf((String) argumentValue.getValue()).intValue();
-                        }
-                        else {
+                        } else {
                             paramTypes[i] = String.class;
                             paramValues[i] = argumentValue.getValue();
                         }
@@ -203,8 +200,7 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                     } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     }
-                }
-                else {
+                } else {
                     obj = clz.newInstance();
                 }
             } else {
@@ -233,47 +229,43 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         //handle properties
         System.out.println("handle properties for bean : " + bd.getId());
         PropertyValues propertyValues = bd.getPropertyValues();
-        if (propertyValues != null){
+        if (propertyValues != null) {
             if (!propertyValues.isEmpty()) {
-                for (int i=0; i<propertyValues.size(); i++) {
+                for (int i = 0; i < propertyValues.size(); i++) {
                     PropertyValue propertyValue = propertyValues.getPropertyValueList().get(i);
                     String pName = propertyValue.getName();
                     String pType = propertyValue.getType();
                     Object pValue = propertyValue.getValue();
                     boolean isRef = propertyValue.getIsRef();
                     Class<?>[] paramTypes = new Class<?>[1];
-                    Object[] paramValues =   new Object[1];
+                    Object[] paramValues = new Object[1];
                     if (!isRef) {
                         if ("String".equals(pType) || "java.lang.String".equals(pType)) {
                             paramTypes[0] = String.class;
-                        }
-                        else if ("Integer".equals(pType) || "java.lang.Integer".equals(pType)) {
+                        } else if ("Integer".equals(pType) || "java.lang.Integer".equals(pType)) {
                             paramTypes[0] = Integer.class;
-                        }
-                        else if ("int".equals(pType)) {
+                        } else if ("int".equals(pType)) {
                             paramTypes[0] = int.class;
-                        }
-                        else {
+                        } else {
                             paramTypes[0] = String.class;
                         }
 
                         paramValues[0] = pValue;
-                    }
-                    else { //is ref, create the dependent beans
+                    } else { //is ref, create the dependent beans
                         try {
                             paramTypes[0] = Class.forName(pType);
                         } catch (ClassNotFoundException e) {
                             e.printStackTrace();
                         }
                         try {
-                            paramValues[0] = getBean((String)pValue);
+                            paramValues[0] = getBean((String) pValue);
 
                         } catch (BeansException e) {
                             e.printStackTrace();
                         }
                     }
 
-                    String methodName = "set" + pName.substring(0,1).toUpperCase() + pName.substring(1);
+                    String methodName = "set" + pName.substring(0, 1).toUpperCase() + pName.substring(1);
 
                     Method method = null;
                     try {

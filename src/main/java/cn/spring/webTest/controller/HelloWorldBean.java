@@ -1,4 +1,4 @@
-package cn.spring.webTest;
+package cn.spring.webTest.controller;
 
 import cn.spring.web.RequestMapping;
 

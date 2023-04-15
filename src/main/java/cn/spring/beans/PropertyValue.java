@@ -14,6 +14,10 @@ public class PropertyValue {
         this.isRef = isRef;
     }
 
+    public PropertyValue(String name, Object value) {
+        this("", name, value, false);
+    }
+
     public String getType() {
         return this.type;
     }

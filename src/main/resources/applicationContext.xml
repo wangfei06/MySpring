@@ -13,4 +13,6 @@
 		<property type="String" name="name" value="Zhang San"/>
 		<property type="String" name="age" value="18"/>
 	</bean>
+	<bean id="webBindingInitializer" class="cn.spring.webTest.DateInitializer">
+	</bean>
 </beans>
