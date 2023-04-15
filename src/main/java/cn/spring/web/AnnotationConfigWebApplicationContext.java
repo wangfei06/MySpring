@@ -30,7 +30,7 @@ public class AnnotationConfigWebApplicationContext
 
 	public AnnotationConfigWebApplicationContext(String fileName, WebApplicationContext parentApplicationContext) {
 		this.parentApplicationContext = parentApplicationContext;
-		this.servletContext = parentApplicationContext == null ? null : this.parentApplicationContext.getServletContext();
+		this.servletContext = this.parentApplicationContext.getServletContext();
 		URL xmlPath = null;
 		try {
 			xmlPath = this.getServletContext().getResource(fileName);
@@ -43,6 +43,7 @@ public class AnnotationConfigWebApplicationContext
 		DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
 		this.beanFactory = bf;
 		this.beanFactory.setParent(this.parentApplicationContext.getBeanFactory());
+		//将controller类加载BeanDefinition中
 		loadBeanDefinitions(controllerNames);
 
 		if (true) {

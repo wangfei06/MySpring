@@ -44,7 +44,6 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
                 singleton=createBean(bd);
                 this.registerBean(beanName, singleton);
 
-                //beanpostprocessor
                 //step 1 : postProcessBeforeInitialization
                 applyBeanPostProcessorsBeforeInitialization(singleton, beanName);
 
@@ -169,42 +168,46 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
 
             //handle constructor
             ConstructorArgumentValues argumentValues = bd.getConstructorArgumentValues();
-            if (!argumentValues.isEmpty()) {
-                Class<?>[] paramTypes = new Class<?>[argumentValues.getArgumentCount()];
-                Object[] paramValues =   new Object[argumentValues.getArgumentCount()];
-                for (int i=0; i<argumentValues.getArgumentCount(); i++) {
-                    ConstructorArgumentValue argumentValue = argumentValues.getIndexedArgumentValue(i);
-                    if ("String".equals(argumentValue.getType()) || "java.lang.String".equals(argumentValue.getType())) {
-                        paramTypes[i] = String.class;
-                        paramValues[i] = argumentValue.getValue();
+            if (argumentValues != null){
+                if (!argumentValues.isEmpty()) {
+                    Class<?>[] paramTypes = new Class<?>[argumentValues.getArgumentCount()];
+                    Object[] paramValues =   new Object[argumentValues.getArgumentCount()];
+                    for (int i=0; i<argumentValues.getArgumentCount(); i++) {
+                        ConstructorArgumentValue argumentValue = argumentValues.getIndexedArgumentValue(i);
+                        if ("String".equals(argumentValue.getType()) || "java.lang.String".equals(argumentValue.getType())) {
+                            paramTypes[i] = String.class;
+                            paramValues[i] = argumentValue.getValue();
+                        }
+                        else if ("Integer".equals(argumentValue.getType()) || "java.lang.Integer".equals(argumentValue.getType())) {
+                            paramTypes[i] = Integer.class;
+                            paramValues[i] = Integer.valueOf((String) argumentValue.getValue());
+                        }
+                        else if ("int".equals(argumentValue.getType())) {
+                            paramTypes[i] = int.class;
+                            paramValues[i] = Integer.valueOf((String) argumentValue.getValue()).intValue();
+                        }
+                        else {
+                            paramTypes[i] = String.class;
+                            paramValues[i] = argumentValue.getValue();
+                        }
                     }
-                    else if ("Integer".equals(argumentValue.getType()) || "java.lang.Integer".equals(argumentValue.getType())) {
-                        paramTypes[i] = Integer.class;
-                        paramValues[i] = Integer.valueOf((String) argumentValue.getValue());
-                    }
-                    else if ("int".equals(argumentValue.getType())) {
-                        paramTypes[i] = int.class;
-                        paramValues[i] = Integer.valueOf((String) argumentValue.getValue()).intValue();
-                    }
-                    else {
-                        paramTypes[i] = String.class;
-                        paramValues[i] = argumentValue.getValue();
+                    try {
+                        con = clz.getConstructor(paramTypes);
+                        obj = con.newInstance(paramValues);
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (SecurityException e) {
+                        e.printStackTrace();
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
                     }
                 }
-                try {
-                    con = clz.getConstructor(paramTypes);
-                    obj = con.newInstance(paramValues);
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+                else {
+                    obj = clz.newInstance();
                 }
-            }
-            else {
+            } else {
                 obj = clz.newInstance();
             }
 
@@ -230,68 +233,69 @@ public abstract class AbstractBeanFactory extends DefaultSingletonBeanRegistry i
         //handle properties
         System.out.println("handle properties for bean : " + bd.getId());
         PropertyValues propertyValues = bd.getPropertyValues();
-        if (!propertyValues.isEmpty()) {
-            for (int i=0; i<propertyValues.size(); i++) {
-                PropertyValue propertyValue = propertyValues.getPropertyValueList().get(i);
-                String pName = propertyValue.getName();
-                String pType = propertyValue.getType();
-                Object pValue = propertyValue.getValue();
-                boolean isRef = propertyValue.getIsRef();
-                Class<?>[] paramTypes = new Class<?>[1];
-                Object[] paramValues =   new Object[1];
-                if (!isRef) {
-                    if ("String".equals(pType) || "java.lang.String".equals(pType)) {
-                        paramTypes[0] = String.class;
+        if (propertyValues != null){
+            if (!propertyValues.isEmpty()) {
+                for (int i=0; i<propertyValues.size(); i++) {
+                    PropertyValue propertyValue = propertyValues.getPropertyValueList().get(i);
+                    String pName = propertyValue.getName();
+                    String pType = propertyValue.getType();
+                    Object pValue = propertyValue.getValue();
+                    boolean isRef = propertyValue.getIsRef();
+                    Class<?>[] paramTypes = new Class<?>[1];
+                    Object[] paramValues =   new Object[1];
+                    if (!isRef) {
+                        if ("String".equals(pType) || "java.lang.String".equals(pType)) {
+                            paramTypes[0] = String.class;
+                        }
+                        else if ("Integer".equals(pType) || "java.lang.Integer".equals(pType)) {
+                            paramTypes[0] = Integer.class;
+                        }
+                        else if ("int".equals(pType)) {
+                            paramTypes[0] = int.class;
+                        }
+                        else {
+                            paramTypes[0] = String.class;
+                        }
+
+                        paramValues[0] = pValue;
                     }
-                    else if ("Integer".equals(pType) || "java.lang.Integer".equals(pType)) {
-                        paramTypes[0] = Integer.class;
-                    }
-                    else if ("int".equals(pType)) {
-                        paramTypes[0] = int.class;
-                    }
-                    else {
-                        paramTypes[0] = String.class;
+                    else { //is ref, create the dependent beans
+                        try {
+                            paramTypes[0] = Class.forName(pType);
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            paramValues[0] = getBean((String)pValue);
+
+                        } catch (BeansException e) {
+                            e.printStackTrace();
+                        }
                     }
 
-                    paramValues[0] = pValue;
-                }
-                else { //is ref, create the dependent beans
+                    String methodName = "set" + pName.substring(0,1).toUpperCase() + pName.substring(1);
+
+                    Method method = null;
                     try {
-                        paramTypes[0] = Class.forName(pType);
-                    } catch (ClassNotFoundException e) {
+                        method = clz.getMethod(methodName, paramTypes);
+                    } catch (NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (SecurityException e) {
                         e.printStackTrace();
                     }
                     try {
-                        paramValues[0] = getBean((String)pValue);
-
-                    } catch (BeansException e) {
+                        method.invoke(obj, paramValues);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     }
                 }
-
-                String methodName = "set" + pName.substring(0,1).toUpperCase() + pName.substring(1);
-
-                Method method = null;
-                try {
-                    method = clz.getMethod(methodName, paramTypes);
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (SecurityException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    method.invoke(obj, paramValues);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-
-
             }
         }
+
 
     }
 
