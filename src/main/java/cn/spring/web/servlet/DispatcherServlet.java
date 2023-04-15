@@ -63,7 +63,7 @@ public class DispatcherServlet extends HttpServlet {
 
 		this.webApplicationContext = new AnnotationConfigWebApplicationContext(sContextConfigLocation,this.parentApplicationContext);
 
-
+		//
 		Refresh();
 
 	}
@@ -119,6 +119,7 @@ public class DispatcherServlet extends HttpServlet {
 		}
 	}
 
+	//处理请求，并将结果写到response
 	protected void doDispatch(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpServletRequest processedRequest = request;
 		HandlerMethod handlerMethod = null;
