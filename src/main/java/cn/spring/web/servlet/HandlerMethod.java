@@ -2,6 +2,9 @@ package cn.spring.web.servlet;
 
 import java.lang.reflect.Method;
 
+/**
+ * controller接口的执行方法
+ */
 public class HandlerMethod {
 	private  Object bean;
 	private  Class<?> beanType;
