@@ -58,6 +58,7 @@ public class AnnotationConfigWebApplicationContext
 
 	}
 
+	//加载controller bean
 	public void loadBeanDefinitions(List<String> controllerNames) {
 		for (String controller : controllerNames) {
 			String beanID=controller;
