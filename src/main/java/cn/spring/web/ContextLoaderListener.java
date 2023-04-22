@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+//监听类的实例类要实现ServletContextListener接口
 public class ContextLoaderListener implements ServletContextListener {
     public static final String CONFIG_LOCATION_PARAM = "contextConfigLocation";
     private WebApplicationContext context;
@@ -19,6 +20,10 @@ public class ContextLoaderListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent event) {
     }
 
+    /**
+     * 该方法执行结束即表示Tomcat启动完成
+     * @param event
+     */
     @Override
     public void contextInitialized(ServletContextEvent event) {
         initWebApplicationContext(event.getServletContext());
