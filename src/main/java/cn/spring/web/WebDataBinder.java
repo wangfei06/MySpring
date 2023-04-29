@@ -44,6 +44,11 @@ public class WebDataBinder {
         return this.propertyAccessor;
     }
 
+    /**
+     * 将HttpServletRequest中的参数放入Map中
+     * @param request
+     * @return
+     */
     private PropertyValues assignParameters(HttpServletRequest request) {
         Map<String,Object> map = WebUtils.getParametersStartingWith(request, "");
 
