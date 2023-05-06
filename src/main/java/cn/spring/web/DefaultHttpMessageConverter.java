@@ -1,7 +1,5 @@
 package cn.spring.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +18,7 @@ public class DefaultHttpMessageConverter implements HttpMessageConverter {
         }
 
         @Override
-        public void write(Object obj, HttpServletResponse response) throws IOException {
+        public void write(Object obj, HttpServletResponse response) throws IOException, IllegalAccessException {
             response.setContentType(defaultContentType);
             response.setCharacterEncoding(defaultCharacterEncoding);
             writeInternal(obj, response);
@@ -28,8 +26,8 @@ public class DefaultHttpMessageConverter implements HttpMessageConverter {
         }
 
 
-        private void writeInternal(Object obj, HttpServletResponse response) throws IOException {
-            String sJsonStr = this.objectMapper.writeValueAsString(obj);
+        private void writeInternal(Object obj, HttpServletResponse response) throws IllegalAccessException, IOException {
+            String sJsonStr = this.objectMapper.writeValuesAsString(obj);
             PrintWriter pw = response.getWriter();
             pw.write(sJsonStr);
         }

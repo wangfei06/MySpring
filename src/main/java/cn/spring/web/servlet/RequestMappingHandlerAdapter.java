@@ -1,10 +1,9 @@
 package cn.spring.web.servlet;
 
 import cn.spring.beans.BeansException;
-import cn.spring.web.WebApplicationContext;
-import cn.spring.web.WebBindingInitializer;
-import cn.spring.web.WebDataBinder;
-import cn.spring.web.WebDataBinderFactory;
+import cn.spring.web.*;
+import cn.spring.web.bind.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
@@ -16,11 +15,14 @@ import java.lang.reflect.Parameter;
 public class RequestMappingHandlerAdapter implements HandlerAdapter {
 	WebApplicationContext wac = null;
 	private WebBindingInitializer webBindingInitializer = null;
+	private DefaultHttpMessageConverter httpMessageConverter = null;
 
 	public RequestMappingHandlerAdapter(WebApplicationContext wac) {
 		this.wac = wac;
 		try {
 			this.webBindingInitializer = (WebBindingInitializer) this.wac.getBean("webBindingInitializer");
+			this.httpMessageConverter = (DefaultHttpMessageConverter) this.wac.getBean("httpMessageConverter");
+
 		} catch (BeansException e) {
 			e.printStackTrace();
 		}
@@ -67,9 +69,12 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter {
 		}
 
 		Method invocableMethod = handlerMethod.getMethod();
-		Object returnobj = invocableMethod.invoke(handlerMethod.getBean(), methodParamObjs);
+		Object returnObj = invocableMethod.invoke(handlerMethod.getBean(), methodParamObjs);
 
-		response.getWriter().append(returnobj.toString());
+		if (invocableMethod.isAnnotationPresent(ResponseBody.class)){ //ResponseBody
+			this.httpMessageConverter.write(returnObj, response);
+		}
+		response.getWriter().append(returnObj.toString());
 
 	}
 

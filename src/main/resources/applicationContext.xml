@@ -15,4 +15,11 @@
 	</bean>
 	<bean id="webBindingInitializer" class="cn.spring.webTest.DateInitializer">
 	</bean>
+	<bean id = "httpMessageConverter" class="cn.spring.web.DefaultHttpMessageConverter">
+		<property type="cn.spring.web.ObjectMapper" name="objectMapper" ref="objectMapper"></property>
+	</bean>
+	<bean id="objectMapper" class="cn.spring.web.DefaultObjectMapper" >
+		<property type="String" name="dateFormat" value="yyyy/MM/dd"/>
+		<property type="String" name="decimalFormat" value="###.##"/>
+	</bean>
 </beans>

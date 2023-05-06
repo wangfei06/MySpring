@@ -2,6 +2,7 @@ package cn.spring.webTest.controller;
 
 import cn.spring.entity.ApiParam;
 import cn.spring.web.RequestMapping;
+import cn.spring.web.bind.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -27,6 +28,14 @@ public class HelloWorldBean {
 	public String doTest2(ApiParam apiParam){
 		System.out.println("apiParam = " + apiParam.getName());
 		return "params are printed";
+	}
+
+	@RequestMapping("/test3")
+	@ResponseBody
+	public ApiParam doTest3(){
+		ApiParam param = new ApiParam();
+		param.setName("Jack");
+		return param;
 	}
 
 }
