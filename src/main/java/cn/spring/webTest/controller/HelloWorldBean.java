@@ -1,6 +1,8 @@
 package cn.spring.webTest.controller;
 
 import cn.spring.entity.ApiParam;
+import cn.spring.entity.User;
+import cn.spring.test.service.UserService;
 import cn.spring.web.RequestMapping;
 import cn.spring.web.bind.ResponseBody;
 
@@ -32,10 +34,9 @@ public class HelloWorldBean {
 
 	@RequestMapping("/test3")
 	@ResponseBody
-	public ApiParam doTest3(){
-		ApiParam param = new ApiParam();
-		param.setName("Jack");
-		return param;
+	public User doTest3(){
+		UserService userService = new UserService();
+		return userService.getUserInfo();
 	}
 
 }
