@@ -1,16 +1,17 @@
 package cn.spring.webTest.controller;
 
+import cn.spring.test.IAction;
+import cn.spring.beans.factory.annotation.Autowired;
 import cn.spring.entity.ApiParam;
 import cn.spring.entity.User;
 import cn.spring.test.service.UserService;
 import cn.spring.web.RequestMapping;
 import cn.spring.web.bind.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
-
-
 public class HelloWorldBean {
+	@Autowired
+	IAction action;
+
 	@RequestMapping("/")
 	public String helloWorld(){
 		return "Hello World";
@@ -37,6 +38,15 @@ public class HelloWorldBean {
 	public User doTest3(){
 		UserService userService = new UserService();
 		return userService.getUserInfo();
+	}
+
+	@RequestMapping("/testAop")
+	public String testAop(){
+
+		action.doAction();
+
+		String str = "test aop, hello world";
+		return str;
 	}
 
 }

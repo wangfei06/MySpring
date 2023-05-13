@@ -22,4 +22,8 @@
 		<property type="String" name="dateFormat" value="yyyy/MM/dd"/>
 		<property type="String" name="decimalFormat" value="###.##"/>
 	</bean>
+	<bean id="realAction" class="cn.spring.test.Action"></bean>
+	<bean id = "action" class="cn.spring.aop.ProxyFactoryBean">
+		<property type="java.lang.Object" name="target" ref="realAction"></property>
+	</bean>
 </beans>
