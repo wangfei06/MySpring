@@ -76,7 +76,6 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
     }
 
     protected Object getObjectForBeanInstance(Object beanInstance, String beanName) {
-        // Now we have the bean instance, which may be a normal bean or a FactoryBean.
         if (!(beanInstance instanceof FactoryBean)) {
             return beanInstance;
         }

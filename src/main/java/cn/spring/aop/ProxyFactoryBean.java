@@ -14,14 +14,17 @@ public class ProxyFactoryBean implements FactoryBean<Object> {
     public ProxyFactoryBean() {
         this.aopProxyFactory = new DefaultAopProxyFactory();
     }
+
     public void setAopProxyFactory(AopProxyFactory aopProxyFactory) {
         this.aopProxyFactory = aopProxyFactory;
     }
+
     public AopProxyFactory getAopProxyFactory() {
         return this.aopProxyFactory;
     }
+
     protected AopProxy createAopProxy() {
-        System.out.println("----------createAopProxy for :"+target+"--------");
+        System.out.println("----------createAopProxy for :" + target + "--------");
         return getAopProxyFactory().createAopProxy(target);
     }
 
@@ -33,9 +36,11 @@ public class ProxyFactoryBean implements FactoryBean<Object> {
     public void setTargetName(String targetName) {
         this.targetName = targetName;
     }
+
     public Object getTarget() {
         return target;
     }
+
     public void setTarget(Object target) {
         this.target = target;
     }
@@ -49,13 +54,15 @@ public class ProxyFactoryBean implements FactoryBean<Object> {
         if (this.singletonInstance == null) {
             this.singletonInstance = getProxy(createAopProxy());
         }
-        System.out.println("----------return proxy for :"+this.singletonInstance+"--------"+this.singletonInstance.getClass());
+        System.out.println("----------return proxy for :" + this.singletonInstance + "--------" + this.singletonInstance.getClass());
 
         return this.singletonInstance;
     }
+
     protected Object getProxy(AopProxy aopProxy) {
         return aopProxy.getProxy();
     }
+
     @Override
     public Class<?> getObjectType() {
         // TODO Auto-generated method stub
